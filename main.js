@@ -8,9 +8,16 @@ p2 = ""
 
 
 
+
 function check() {
-speak()
+    img = document.getElementById("pic")
+    classifier.classify(img, gotresult)
 }
+
+
+
+
+
 Webcam.set({
     width: 350,
     height: 300,
@@ -24,6 +31,7 @@ classifier = ml5.imageClassifier("https://teachablemachine.withgoogle.com/models
 function modelLoaded() {
     console.log("model loaded");
 }
+
 function speak() {
     synth = window.speechSynthesis
     speakdata1 = "First prediction is " + p1
@@ -31,3 +39,44 @@ function speak() {
     utterthis = new SpeechSynthesisUtterance(speakdata1 + speakdata2)
     synth.speak(utterthis)
 }
+
+function gotresult(error, result) {
+    if (error) {
+        console.error(error);
+    } else {
+        console.log(result);
+        p1 = result[0].label
+        p2 = result[1].label
+        document.getElementById("emotion_name1").innerHTML = p1
+        document.getElementById("emotion_name2").innerHTML = p2
+        speak()
+        if (p1 == 'Thumbs up') {
+            document.getElementById("emoji1").innerHTML="👍"
+
+        }
+        else if (p1 == 'Perfect') {
+            document.getElementById("emoji1").innerHTML="👌"
+
+        }
+        else {
+            document.getElementById("emoji1").innerHTML="👎"
+
+        }if (p2 == 'Thumbs up') {
+            document.getElementById("emoji2").innerHTML="👍"
+
+        }
+        else if (p2 == 'Perfect') {
+            document.getElementById("emoji2").innerHTML="👌"
+
+        }
+        else {
+            document.getElementById("emoji2").innerHTML="👎"
+
+        }
+    }
+}
+
+
+
+
+
